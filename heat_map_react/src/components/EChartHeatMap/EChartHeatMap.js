@@ -19,15 +19,17 @@ const EChartHeatMap = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  //
+  // api 데이터가 있는지 확인하는 함수 (Loading 체크)
   const dataStateManage = () => {
     if (apiData.length !== 0) {
       setIsData(true);
     }
   };
 
+  //dataStateManage apiData의 상태가 바뀌면 함수를 실행시켜주는 useEffect
   useEffect(dataStateManage, [apiData]);
 
+  //isData == true, 데이터가 있다면 그래프를 그리는 함수를 실행
   useEffect(() => {
     if (isData) {
       const hours = apiData.data.dimensions;
@@ -62,6 +64,7 @@ const EChartHeatMap = () => {
         grid: {
           height: "85%",
           top: "10%",
+          show: true,
         },
         xAxis: {
           type: "category",
@@ -111,8 +114,10 @@ const EChartHeatMap = () => {
   }, [isData]);
 
   return isData ? (
+    //그래프 컴포넌트
     <ReactECharts option={echartOption} style={{ marginTop: "50px" }} />
   ) : (
+    //데이터 불러오기 전까지 로딩창 실행
     <BarLoader
       color={"#2881b9"}
       css={`
